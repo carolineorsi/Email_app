@@ -23,10 +23,7 @@ def email():
     subject = request.form.get("subject")
     body = request.form.get("body")
 
-    print to_email, to_name, from_email, from_name, subject, body
-
-
-    return "success"
+    return "Message Sent!"
 
 
 if __name__ == "__main__":
