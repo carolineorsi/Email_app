@@ -1,0 +1,48 @@
+<html>
+    <head>
+        <title>Input Form</title>
+        <style>
+            div {
+                padding-bottom: 10px;
+            }
+        </style>
+    </head>
+    <body>
+        <form method="POST" action="/email">
+            <div>
+                <label for="to">To Email:</label>
+                <input type="email" name="to">
+            </div>
+
+            <div>
+                <label for="to_name">To Name:</label>
+                <input type="text" name="to_name">
+            </div>
+
+            <div>
+                <label for="from">From Email:</label>
+                <input type="email" name="from">
+            </div>
+
+            <div>
+                <label for="from_name">From Name:</label>
+                <input type="text" name="from_name">
+            </div>
+
+            <div>
+                <label for="subject">Subject:</label>
+                <input type="text" name="subject">
+            </div>
+
+            <div>
+                <label for="body">Body:</label>
+                <textarea name="body" cols="40" rows="5">
+                </textarea>
+            </div>
+
+            <div>
+                <button type="submit">Submit</button>
+            </div>
+        </form>
+    </body>
+</html>
