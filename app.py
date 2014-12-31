@@ -1,4 +1,5 @@
 import os
+import msg
 from flask import Flask, request, render_template, jsonify
 
 SECRET_KEY = os.environ.get('FLASK_SECRET_KEY', "abcdefg")
@@ -22,9 +23,9 @@ def email():
     # from_name = request.form.get("from_name")
     # subject = request.form.get("subject")
     # body = request.form.get("body")
-    json = request.json
+    msg.process_msg(request.get_json())
 
-    print json
+    print jsondata['email']
     return "success"
 
 

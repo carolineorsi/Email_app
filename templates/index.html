@@ -8,7 +8,7 @@
         </style>
     </head>
     <body>
-        <form method="POST" action="/email">
+        <form method="POST" id="email-form">
             <div>
                 <label for="to">To Email:</label>
                 <input type="email" name="to" value="caroline.orsi@gmail.com">
@@ -45,9 +45,35 @@
                 <button type="submit">Submit</button>
             </div>
         </form>
+        <p id="response"></p>
 
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
         <script>
+            $("#email-form").submit(sendMessage);
 
+            function sendMessage(evt) {
+                evt.preventDefault();
+                // $.post(
+                //     '/email',
+                //     {'email': 'caroline.orsi@gmail.com'
+                //     },
+                //     function(response) {
+                //         $("#response").text(response);
+                //     }
+                // );
+                postobj = {'email': 'caroline.orsi@gmail.com'}
+
+                $.ajax({
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(postobj),
+                    dataType: 'json',
+                    url: '/email',
+                    success: function(response) {
+                        $("#response").text("success js");
+                    }
+                });
+            };
         </script>
     </body>
 </html>
