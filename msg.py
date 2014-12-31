@@ -7,7 +7,9 @@ MAILGUN_API_KEY = os.environ.get('MAILGUN_API_KEY')
 
 def process_msg(message):
     if check_content(message):
-        message['body'] = remove_html(msg['body'])
+        message['body'] = remove_html(message['body'])
+
+
         pass
 
     else: 
@@ -17,12 +19,16 @@ def process_msg(message):
 
 def check_content(message):
     """ Checks that all fields of the message object contain text. """
+
     valid = True
 
     for key in message:
         if message[key] == '':
             valid = False
             return valid
+
+    if not validate_email(message['to']) or not validate_email(message['from']):
+        valid = False
 
     return valid
 
@@ -41,15 +47,17 @@ def send_simple_message():
 
 
 def validate_email(email):
-    # Instead of making this one function, could do "if not re.match(...)" elsewhere
+    """ Checks that email is valid. """
+
     if re.match(r'[a-zA-Z0-9._%+-]+@[a-zA-Z0-9._-]+(\.[a-zA-Z]{2,3})+\b', email):
-        return "Valid"
+        return True
     else:
-        return "invalid"
-    pass
+        return False
 
 
 def remove_html(body):
+    """ Removes HTML tags from body text. """
+
     return BeautifulSoup(body).text
 
 
