@@ -1,5 +1,5 @@
 import os
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, jsonify
 
 SECRET_KEY = os.environ.get('FLASK_SECRET_KEY', "abcdefg")
 
@@ -16,17 +16,19 @@ def index():
 @app.route("/email", methods=["POST"])
 def email():
     """ Placeholder. """
-    to_email = request.form.get("to")
-    to_name = request.form.get("to_name")
-    from_email = request.form.get("from")
-    from_name = request.form.get("from_name")
-    subject = request.form.get("subject")
-    body = request.form.get("body")
+    # to_email = request.form.get("to")
+    # to_name = request.form.get("to_name")
+    # from_email = request.form.get("from")
+    # from_name = request.form.get("from_name")
+    # subject = request.form.get("subject")
+    # body = request.form.get("body")
+    json = request.json
 
-    return "Message Sent!"
+    print json
+    return "success"
 
 
 if __name__ == "__main__":
-    PORT = int(os.environ.get("PORT", 5000))
+    PORT = int(os.environ.get("PORT", 5001))
     DEBUG = "NO_DEBUG" not in os.environ
     app.run(debug=DEBUG, host="0.0.0.0", port=PORT)
