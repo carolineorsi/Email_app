@@ -17,15 +17,8 @@ def index():
 @app.route("/email", methods=["POST"])
 def email():
     """ Placeholder. """
-    # to_email = request.form.get("to")
-    # to_name = request.form.get("to_name")
-    # from_email = request.form.get("from")
-    # from_name = request.form.get("from_name")
-    # subject = request.form.get("subject")
-    # body = request.form.get("body")
     msg.process_msg(request.get_json())
 
-    print jsondata['email']
     return "success"
 
 

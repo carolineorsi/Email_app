@@ -5,9 +5,27 @@ from BeautifulSoup import BeautifulSoup
 
 MAILGUN_API_KEY = os.environ.get('MAILGUN_API_KEY')
 
-def process_msg(msg):
-    
-    pass
+def process_msg(message):
+    if check_content(message):
+        message['body'] = remove_html(msg['body'])
+        pass
+
+    else: 
+        # something here to return error
+        pass
+
+
+def check_content(message):
+    """ Checks that all fields of the message object contain text. """
+    valid = True
+
+    for key in message:
+        if message[key] == '':
+            valid = False
+            return valid
+
+    return valid
+
 
 def send_simple_message():
     request = requests.post(
