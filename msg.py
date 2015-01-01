@@ -4,20 +4,12 @@ import re
 from BeautifulSoup import BeautifulSoup
 
 MAILGUN_API_KEY = os.environ.get('MAILGUN_API_KEY')
-
-def process_msg(message):
-    if check_content(message):
-        message['body'] = remove_html(message['body'])
+SENDGRID_API_USER = os.environ.get('SENDGRID_API_USER')
+SENDGRID_API_KEY = os.environ.get('SENDGRID_API_KEY')
 
 
-        pass
 
-    else: 
-        # something here to return error
-        pass
-
-
-def check_content(message):
+def check_valid_content(message):
     """ Checks that all fields of the message object contain text. """
 
     valid = True
@@ -30,20 +22,9 @@ def check_content(message):
     if not validate_email(message['to']) or not validate_email(message['from']):
         valid = False
 
+    message['body'] = remove_html(message['body'])
+
     return valid
-
-
-def send_simple_message():
-    request = requests.post(
-        "https://api.mailgun.net/v2/sandbox74f4b1d357014aaabd16ecc5f39e75b5.mailgun.org/messages",
-        auth=("api", MAILGUN_API_KEY),
-        data={"from": "Caroline Yahoo <juliabrown.sf@gmail.com>",
-              "to": "Caroline Orsi <caroline.orsi@gmail.com>",
-              "subject": "Hello Caroline Orsi",
-              "text": "Test of API Key"})
-
-    print request.status_code
-    print request.text
 
 
 def validate_email(email):
@@ -61,5 +42,30 @@ def remove_html(body):
     return BeautifulSoup(body).text
 
 
+def send_message_mailgun():
+    response = requests.post( #return this and handle error in parent function?
+        "https://api.mailgun.net/v2/sandbox74f4b1d357014aaabd16ecc5f39e75b5.mailgun.org/messages",
+        auth=("api", MAILGUN_API_KEY),
+        data={"from": "Caroline Yahoo <wiredoats@yahoo.com>",
+              "to": "Caroline Orsi <caroline.orsi@gmail.com>",
+              "subject": "Hello Caroline Orsi",
+              "text": "Test of API Key"})
 
-remove_html("<h1>Your Bill</h1><p>$10</p>")
+
+    print response.status_code
+    print response.text
+
+def send_message_sendgrid():
+    message = {'api_user': SENDGRID_API_USER,
+               'api_key': SENDGRID_API_KEY,
+               'to': 'caroline.orsi@gmail.com',
+               'toname': 'Caroline Orsi',
+               'subject': 'Yo from sendgrid',
+               'text': 'this is your test message',
+               'from': 'juliabrown.sf@gmail.com'}
+
+    response = requests.get( #return this and handle error in parent function?
+        "https://api.sendgrid.com/api/mail.send.json",
+        params=message)
+
+    print vars(response)

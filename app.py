@@ -17,7 +17,14 @@ def index():
 @app.route("/email", methods=["POST"])
 def email():
     """ Placeholder. """
-    msg.process_msg(request.get_json())
+    message = request.get_json()
+    if msg.check_valid_content(message):
+        msg.send_message_sendgrid()
+
+
+    else:
+        # do something to return error
+        pass
 
     return "success"
 
