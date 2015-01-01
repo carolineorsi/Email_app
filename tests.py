@@ -1,6 +1,7 @@
 import unittest
 from app import *
 from msg import *
+import mock
 
 
 class TestMsgFunctions(unittest.TestCase):
@@ -35,6 +36,15 @@ class TestMsgFunctions(unittest.TestCase):
                          'Headerand some text')
         self.assertEqual(remove_html('<div><h1>Header within div</h1></div>'),
                          'Header within div')
+
+    # @mock.patch('__main__.send_message_sendgrid', return_value=200)
+    # @mock.patch('__main__.send_message_mailgun', return_value=200)
+    # def test_send_message_sendgrid(self, sendgrid_function, mailgun_function):
+    #     assert send_message_sendgrid("test") == 200
+
+    # # @mock.patch('__main__.send_message_sendgrid', side_effect=mock_message_sendgrid)
+    # # def test_send_message_sendgrid(self, send_message_sendgrid_function):
+    # #     assert send_message_sendgrid("test")['status_code'] == 1234
 
 
 if __name__ == '__main__':
