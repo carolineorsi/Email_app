@@ -6,6 +6,7 @@ from flask import Flask, request, render_template, jsonify
 SECRET_KEY = os.environ.get('FLASK_SECRET_KEY', "abcdefg")
 
 app = Flask(__name__)
+email_provider = msg.send_message_mailgun
 
 
 @app.route("/")
@@ -22,11 +23,20 @@ def email():
     if not msg.check_valid_content(message):
         return "failure" #whatever this should be
 
-    if msg.send_message_mailgun(message) != requests.codes.ok:
-        # toggle email provider
+    if email_provider(message) != requests.codes.ok:
+        toggle_email_provider()
+        print email_provider(message)
 
     else:
         return "success"
+
+
+def toggle_email_provider():
+    global email_provider
+    if email_provider == msg.send_message_mailgun:
+        email_provider = msg.send_message_sendgrid
+    else:
+        email_provider = msg.send_message_mailgun
 
 
 if __name__ == "__main__":

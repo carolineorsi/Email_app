@@ -6,7 +6,6 @@ from BeautifulSoup import BeautifulSoup
 MAILGUN_API_KEY = os.environ.get('MAILGUN_API_KEY')
 SENDGRID_API_USER = os.environ.get('SENDGRID_API_USER')
 SENDGRID_API_KEY = os.environ.get('SENDGRID_API_KEY')
-email_provider = mailgun
 
 
 
@@ -44,7 +43,7 @@ def remove_html(body):
 
 
 def send_message_mailgun(message):
-    return response = requests.post( #return this and handle error in parent function?
+    return requests.post( #return this and handle error in parent function?
         "https://api.mailgun.net/v2/sandbox74f4b1d357014aaabd16ecc5f39e75b5.mailgun.org/messages",
         auth=("api", MAILGUN_API_KEY),
         data={"from": (message['from_name'] + " <" + message['from'] + ">"),
@@ -55,7 +54,7 @@ def send_message_mailgun(message):
 
 
 def send_message_sendgrid(message):
-    return response = requests.get(
+    return requests.get(
         "https://api.sendgrid.com/api/mail.send.json",
         params={'api_user': SENDGRID_API_USER,
                 'api_key': SENDGRID_API_KEY,
@@ -66,3 +65,7 @@ def send_message_sendgrid(message):
                 'from': message['from'],
                 'fromname': message['from_name']}
         )
+
+
+def toggle_mail_provider():
+    pass
