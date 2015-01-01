@@ -23,6 +23,12 @@ class TestMsgFunctions(unittest.TestCase):
                                               'subject': '',
                                               'body': ''}))
         self.assertFalse(check_valid_content({'to': ''}))
+        self.assertTrue(check_valid_content({'to': 'someone@email.com',
+                                             'to_name': 'Someone',
+                                             'from': 'someoneelse@gmail.com',
+                                             'from_name': 'Someone Else',
+                                             'subject': 'This is the subject.',
+                                             'body': 'This is the body.'}))
 
     def test_remove_html(self):
         self.assertEqual(remove_html("<h1>Header</h1>"), 
@@ -31,9 +37,6 @@ class TestMsgFunctions(unittest.TestCase):
                                      "Headerand some text")
         self.assertEqual(remove_html("<div><h1>Header within div</h1></div>"),
                                      "Header within div")
-
-    def test_toggle_email_provider(self):
-
 
 
 if __name__ == '__main__':
