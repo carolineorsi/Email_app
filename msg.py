@@ -39,7 +39,8 @@ def check_valid_content(message):
 def validate_email(email):
     """ Uses regular expression to check that email is valid. """
 
-    if re.match(r'[a-zA-Z0-9._%+-]+@[a-zA-Z0-9._-]+(\.[a-zA-Z]{2,3})+\b', email):
+    if re.match(r'[a-zA-Z0-9._%+-]+@[a-zA-Z0-9._-]+(\.[a-zA-Z]{2,3})+\b',
+                email):
         return True
     else:
         return False
@@ -60,17 +61,18 @@ def send_message_mailgun(message):
         'from' : sender email address
         'from_name' : sender name
         'subject' : email subject
-        'body' : text of email 
+        'body' : text of email
 
         Returns Mailgun response object """
 
     return requests.post(
-        "https://api.mailgun.net/v2/sandbox74f4b1d357014aaabd16ecc5f39e75b5.mailgun.org/messages",
-        auth=("api", MAILGUN_API_KEY),
-        data={"from": (message['from_name'] + " <" + message['from'] + ">"),
-              "to": (message['to_name'] + " <" + message['to'] + ">"),
-              "subject": message['subject'],
-              "text": message['body']}
+        'https://api.mailgun.net/v2/sandbox74f4b1d357014aaabd16ecc5f39e75b5.\
+            mailgun.org/messages',
+        auth=('api', MAILGUN_API_KEY),
+        data={'from': (message['from_name'] + ' <' + message['from'] + '>'),
+              'to': (message['to_name'] + ' <' + message['to'] + '>'),
+              'subject': message['subject'],
+              'text': message['body']}
         )
 
 
@@ -83,12 +85,12 @@ def send_message_sendgrid(message):
         'from' : sender email address
         'from_name' : sender name
         'subject' : email subject
-        'body' : text of email 
+        'body' : text of email
 
         Returns SendGrid response object """
 
     return requests.get(
-        "https://api.sendgrid.com/api/mail.send.json",
+        'https://api.sendgrid.com/api/mail.send.json',
         params={'api_user': SENDGRID_API_USER,
                 'api_key': SENDGRID_API_KEY,
                 'to': message['to'],

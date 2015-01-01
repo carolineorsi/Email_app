@@ -2,37 +2,45 @@ import os
 import msg
 import requests
 from flask import Flask, request, render_template, jsonify, make_response
-from msg import check_valid_content, send_message_mailgun, send_message_sendgrid
+from msg import send_message_mailgun, send_message_sendgrid
+from msg import check_valid_content
 
-SECRET_KEY = os.environ.get('FLASK_SECRET_KEY', "abcdefg")
-email_provider = send_message_mailgun
+SECRET_KEY = os.environ.get('FLASK_SECRET_KEY', 'abcdefg')
+email_provider = send_message_sendgrid
 
 app = Flask(__name__)
 
 
-@app.route("/")
+@app.route('/')
 def index():
-    """ This is the 'cover' page of the site """
+    """ Directs to the email input form. """
 
-    return render_template("index.html")
+    return render_template('index.html')
 
 
-@app.route("/email", methods=["POST"])
+@app.route('/email', methods=['POST'])
 def email():
-    """ Placeholder. """
+    """ Receives JSON message object, makes calls to validate data and
+        send message, and returns response. """
+
     message = request.get_json()
+
     if not check_valid_content(message):
-        return make_response(jsonify({'message': 'Invalid input parameters.'}), 400)
+        return make_response(jsonify(
+            {'message': 'Invalid input parameters.'}), 400)
 
     if email_provider(message).status_code != requests.codes.ok:
         toggle_email_provider()
         if email_provider(message).status_code != requests.codes.ok:
-            return make_response(jsonify({'message': 'Error encountered with email provider.'}), 500)
+            return make_response(jsonify(
+                {'message': 'Error encountered with email provider.'}), 500)
 
     return make_response(jsonify({'message': 'Message sent.'}), 200)
 
 
 def toggle_email_provider():
+    """ Changes email provider variable to reference alternate provider. """
+
     global email_provider
     if email_provider == send_message_mailgun:
         email_provider = send_message_sendgrid
@@ -40,7 +48,7 @@ def toggle_email_provider():
         email_provider = send_message_mailgun
 
 
-if __name__ == "__main__":
-    PORT = int(os.environ.get("PORT", 5001))
-    DEBUG = "NO_DEBUG" not in os.environ
-    app.run(debug=DEBUG, host="0.0.0.0", port=PORT)
+if __name__ == '__main__':
+    PORT = int(os.environ.get('PORT', 5001))
+    DEBUG = 'NO_DEBUG' not in os.environ
+    app.run(debug=DEBUG, host='0.0.0.0', port=PORT)
