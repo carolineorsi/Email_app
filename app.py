@@ -29,7 +29,7 @@ def email():
         if email_provider(message).status_code != requests.codes.ok:
             return make_response(jsonify({'message': 'Error encountered with email provider.'}), 500)
 
-    return response = make_response(jsonify({'message': 'Message sent.'}), 200)
+    return make_response(jsonify({'message': 'Message sent.'}), 200)
 
 
 def toggle_email_provider():
