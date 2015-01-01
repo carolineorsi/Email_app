@@ -8,7 +8,6 @@ SENDGRID_API_USER = os.environ.get('SENDGRID_API_USER')
 SENDGRID_API_KEY = os.environ.get('SENDGRID_API_KEY')
 
 
-
 def check_valid_content(message):
     """ Checks that all fields of the message object contain text. """
 
@@ -43,7 +42,7 @@ def remove_html(body):
 
 
 def send_message_mailgun(message):
-    return requests.post( #return this and handle error in parent function?
+    return requests.post(
         "https://api.mailgun.net/v2/sandbox74f4b1d357014aaabd16ecc5f39e75b5.mailgun.org/messages",
         auth=("api", MAILGUN_API_KEY),
         data={"from": (message['from_name'] + " <" + message['from'] + ">"),
@@ -65,7 +64,3 @@ def send_message_sendgrid(message):
                 'from': message['from'],
                 'fromname': message['from_name']}
         )
-
-
-def toggle_mail_provider():
-    pass

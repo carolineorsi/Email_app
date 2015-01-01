@@ -67,8 +67,8 @@
                     data: JSON.stringify(msg),
                     dataType: 'json',
                     url: '/email',
-                    success: function() {
-                        $("#response").text("success js");
+                    success: function(response) {
+                        $("#response").text(response.message);
                     }
                 });
             };

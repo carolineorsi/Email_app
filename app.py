@@ -1,12 +1,13 @@
 import os
 import msg
 import requests
-from flask import Flask, request, render_template, jsonify
+from flask import Flask, request, render_template, jsonify, make_response
+from msg import check_valid_content, send_message_mailgun, send_message_sendgrid
 
 SECRET_KEY = os.environ.get('FLASK_SECRET_KEY', "abcdefg")
+email_provider = send_message_mailgun
 
 app = Flask(__name__)
-email_provider = msg.send_message_mailgun
 
 
 @app.route("/")
@@ -20,23 +21,23 @@ def index():
 def email():
     """ Placeholder. """
     message = request.get_json()
-    if not msg.check_valid_content(message):
-        return "failure" #whatever this should be
+    if not check_valid_content(message):
+        return make_response(jsonify({'message': 'Invalid input parameters.'}), 400)
 
-    if email_provider(message) != requests.codes.ok:
+    if email_provider(message).status_code != requests.codes.ok:
         toggle_email_provider()
-        print email_provider(message)
+        if email_provider(message).status_code != requests.codes.ok:
+            return make_response(jsonify({'message': 'Error encountered with email provider.'}), 500)
 
-    else:
-        return "success"
+    return response = make_response(jsonify({'message': 'Message sent.'}), 200)
 
 
 def toggle_email_provider():
     global email_provider
-    if email_provider == msg.send_message_mailgun:
-        email_provider = msg.send_message_sendgrid
+    if email_provider == send_message_mailgun:
+        email_provider = send_message_sendgrid
     else:
-        email_provider = msg.send_message_mailgun
+        email_provider = send_message_mailgun
 
 
 if __name__ == "__main__":
