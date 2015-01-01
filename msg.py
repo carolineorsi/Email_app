@@ -44,14 +44,14 @@ def remove_html(body):
 
 def send_message_mailgun(message):
 
-
     response = requests.post( #return this and handle error in parent function?
         "https://api.mailgun.net/v2/sandbox74f4b1d357014aaabd16ecc5f39e75b5.mailgun.org/messages",
         auth=("api", MAILGUN_API_KEY),
-        data={"from": "Caroline Yahoo <wiredoats@yahoo.com>",
-              "to": "Caroline Orsi <caroline.orsi@gmail.com>",
-              "subject": "Hello Caroline Orsi",
-              "text": "Test of API Key"})
+        data={"from": (message['from_name'] + " <" + message['from'] + ">"),
+              "to": (message['to_name'] + " <" + message['to'] + ">"),
+              "subject": message['subject'],
+              "text": message['body']}
+        )
 
 
     print response.status_code
@@ -69,6 +69,7 @@ def send_message_sendgrid(message):
                 'subject': message['subject'],
                 'text': message['body'],
                 'from': message['from'],
-                'fromname': message['from_name']})
+                'fromname': message['from_name']}
+        )
 
     print vars(response)
