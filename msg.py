@@ -42,7 +42,9 @@ def remove_html(body):
     return BeautifulSoup(body).text
 
 
-def send_message_mailgun():
+def send_message_mailgun(message):
+
+
     response = requests.post( #return this and handle error in parent function?
         "https://api.mailgun.net/v2/sandbox74f4b1d357014aaabd16ecc5f39e75b5.mailgun.org/messages",
         auth=("api", MAILGUN_API_KEY),
@@ -55,17 +57,18 @@ def send_message_mailgun():
     print response.status_code
     print response.text
 
-def send_message_sendgrid():
-    message = {'api_user': SENDGRID_API_USER,
-               'api_key': SENDGRID_API_KEY,
-               'to': 'caroline.orsi@gmail.com',
-               'toname': 'Caroline Orsi',
-               'subject': 'Yo from sendgrid',
-               'text': 'this is your test message',
-               'from': 'juliabrown.sf@gmail.com'}
+
+def send_message_sendgrid(message):
 
     response = requests.get( #return this and handle error in parent function?
         "https://api.sendgrid.com/api/mail.send.json",
-        params=message)
+        params={'api_user': SENDGRID_API_USER,
+                'api_key': SENDGRID_API_KEY,
+                'to': message['to'],
+                'toname': message['to_name'],
+                'subject': message['subject'],
+                'text': message['body'],
+                'from': message['from'],
+                'fromname': message['from_name']})
 
     print vars(response)

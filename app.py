@@ -19,7 +19,7 @@ def email():
     """ Placeholder. """
     message = request.get_json()
     if msg.check_valid_content(message):
-        msg.send_message_sendgrid()
+        msg.send_message_sendgrid(message)
 
 
     else:
