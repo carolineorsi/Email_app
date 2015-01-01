@@ -1,5 +1,6 @@
 import os
 import msg
+import requests
 from flask import Flask, request, render_template, jsonify
 
 SECRET_KEY = os.environ.get('FLASK_SECRET_KEY', "abcdefg")
@@ -18,15 +19,14 @@ def index():
 def email():
     """ Placeholder. """
     message = request.get_json()
-    if msg.check_valid_content(message):
-        msg.send_message_mailgun(message)
+    if not msg.check_valid_content(message):
+        return "failure" #whatever this should be
 
+    if msg.send_message_mailgun(message) != requests.codes.ok:
+        # toggle email provider
 
     else:
-        # do something to return error
-        pass
-
-    return "success"
+        return "success"
 
 
 if __name__ == "__main__":
