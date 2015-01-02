@@ -68,6 +68,7 @@
                     dataType: 'json',
                     url: '/email',
                     success: function(response) {
+                        console.log(response)
                         $("#response").text(response.message);
                     }
                 });
