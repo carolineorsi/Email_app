@@ -1,6 +1,6 @@
 ## Introduction
 
-Placeholder
+This app accepts JSON data and sends email from one of two email service providers, Mailgun and SendGrid. If one email provider fails, the app toggles to the alternate provider.
 
 ## Installation
 
@@ -11,4 +11,3 @@ Placeholder
 
 ## Discussion
 
-Placeholder
