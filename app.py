@@ -25,10 +25,14 @@ def email():
 
     message = request.get_json()
 
+    # Checks input contents and returns error if invalid.
     if not check_valid_content(message):
         return make_response(jsonify(
             {'message': 'Invalid input parameters.'}), 400)
 
+    # Attempts to send message via email provider stored in global variable
+    # "email_provider." If messaging fails, calls toggle_email_provider
+    # to change preferred email provider to alternate service. 
     if email_provider(message).status_code != requests.codes.ok:
         toggle_email_provider()
         if email_provider(message).status_code != requests.codes.ok:

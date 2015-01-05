@@ -63,7 +63,7 @@ def send_message_mailgun(message):
         'subject' : email subject
         'body' : text of email
 
-        Returns Mailgun response object """
+        Returns Mailgun response object. """
 
     return requests.post(
         'https://api.mailgun.net/v2/sandbox74f4b1d357014aaabd16ecc5f39e75b5.\
@@ -87,7 +87,7 @@ def send_message_sendgrid(message):
         'subject' : email subject
         'body' : text of email
 
-        Returns SendGrid response object """
+        Returns SendGrid response object. """
 
     return requests.get(
         'https://api.sendgrid.com/api/mail.send.json',
